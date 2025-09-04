@@ -111,6 +111,41 @@ public abstract class Parser<T> {
     }
 
     /**
+     * Ignores the result of parsing and just returns the position after parsing as many times as possible from the input
+     * string starting from the given position. If atLeastOne is true, it will throw a BaseParseException if no results
+     * were parsed.
+     * @param input the input string to be parsed
+     * @param position the position to start parsing from
+     * @param atLeastOne whether to require at least one successful parse
+     * @return the position after parsing
+     */
+    public int skip(String input, int position, boolean atLeastOne) {
+        return parseMany(input, position, atLeastOne).position();
+    }
+
+    /**
+     * Ignores the result of parsing and just returns the position after parsing as many times as possible from the input
+     * string starting from the given position. This will not throw an exception if no results were parsed.
+     * @param input the input string to be parsed
+     * @param position the position to start parsing from
+     * @return the position after parsing
+     */
+    public int skip0(String input, int position) {
+        return skip(input, position, false);
+    }
+
+    /**
+     * Ignores the result of parsing and just returns the position after parsing as many times as possible from the input
+     * string starting from the given position. This will throw a BaseParseException if no results were parsed.
+     * @param input the input string to be parsed
+     * @param position the position to start parsing from
+     * @return the position after parsing
+     */
+    public int skip1(String input, int position) {
+        return skip(input, position, true);
+    }
+
+    /**
      * Parses the entire input string and returns the parsed result. This is equivalent to calling
      * parse(input, true). It will throw a RuntimeException if the entire input string was not consumed
      * during parsing.
