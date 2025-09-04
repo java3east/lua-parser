@@ -5,6 +5,10 @@ import de.fb.luaparser.Parser;
 
 import java.util.Optional;
 
+/**
+ * Parser for signed long integers. Parses an optional '+' or '-' sign followed by a sequence of digits,
+ * and converts it to a signed long. If the number is out of range, a BaseParseException is thrown.
+ */
 public class SignedLongParser extends Parser<Long> {
     public static final SignedLongParser INSTANCE = new SignedLongParser();
 

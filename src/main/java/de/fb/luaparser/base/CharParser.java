@@ -3,11 +3,36 @@ package de.fb.luaparser.base;
 import de.fb.luaparser.BaseParseException;
 import de.fb.luaparser.Parser;
 
+import java.util.HashMap;
+
 /**
  * A char parser tries to parse the given character from the input string. If the character is found, it returns it as the result.
  * If the character is not found, it throws a BaseParseException. If the end of the input is reached, it also throws a BaseParseException.
  */
 public class CharParser extends Parser<Character> {
+    private static final HashMap<Character, CharParser> CACHE = new HashMap<>();
+
+    /**
+     * Returns a cached CharParser for the given character, or creates a new one if it doesn't exist yet.
+     * @param c the character to parse
+     * @return a cached CharParser for the given character
+     */
+    public static CharParser get(char c) {
+        return CACHE.computeIfAbsent(c, CharParser::new);
+    }
+
+    /**
+     * Parses the given character from the input string at the given position.
+     * @throws BaseParseException if the character is not found or the end of the input is reached
+     * @param c the character to parse
+     * @param input the input string
+     * @param position the position to start parsing from
+     * @return a Parser.Result containing the parsed character and the new position
+     */
+    public static Parser.Result<Character> parse(char c, String input, int position) throws BaseParseException {
+        return get(c).parse(input, position);
+    }
+
     /**
      * Creates a new Parser that tries to parse any of the given characters.
      * @param chars the characters to parse
@@ -27,7 +52,7 @@ public class CharParser extends Parser<Character> {
      * Creates a new CharParser that tries to parse the given character.
      * @param c the character to parse
      */
-    public CharParser(char c) {
+    private CharParser(char c) {
         this.c = c;
     }
 
